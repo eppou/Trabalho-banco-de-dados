@@ -1,0 +1,12 @@
+IDEIAS INICIAIS
+
+-traçar dados sobre criminalidade
+-web API para buscar dados do SINESP sobre crimes no brasil
+  OBS: >API traz dados tratados para MongoDB(nao relacional)
+       >limtação na quantidade e tipo de dados que podem ser trazidos
+       >trabalho extra para conseguir cruzar com dados internacionais
+
+-API do governo amerciano e/ou socrata
+  OBS: >dados unicamento dos estados unidos
+       >fluxo muito grande de datasets dificultando o manejo e foco em uma area especifica
+
