@@ -1,0 +1,17 @@
+Detalhes do projeto:
+Analisar as ocorrências criminais de algumas cidades dos Estados Unidos e do Reino Unido de acordo com informações extraídas de APIs
+
+Coleta de Dados:
+API Data police UK - https://data.police.uk/docs/ API governamental da policia do Reino Unido, é possível retirar algumas informações de crimes
+ocorridos entre os anos de 2020 e 2023
+
+Socrata Open Data API - https://dev.socrata.com/ Essa API permite o acesso a dados abertos de governos pelo mundo. É possível retirar informações
+de crimes nas cidades dos Estados Unidos
+
+Indicação de relatórios possíveis:
+
+Locais com maior índice de crimes
+Locais com maior índice de crimes violentos e não violentos
+Fazer uma comparação de crimes das cidades dos EUA com cidades do Reino Unido
+Relacionar a área em que os crimes ocorrem com índices socio-econômicos
+Comparar as cidades dos EUA em relação aos crimes
