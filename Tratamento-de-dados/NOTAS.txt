@@ -1,0 +1,1 @@
+tratamento dos dados apos as requisiçoes de API para padronizar,regularizar e traduzir os dados afim de fazer uma inserção consistente e padronizada no nosso banco
