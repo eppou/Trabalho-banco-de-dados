@@ -1,0 +1,2 @@
+INSERT INTO crime_db.estado(sigla,nome,nome_pais,rpc_estado,area_estado,populacao_estado)
+VALUES ('WM','West-Midlands','Reino Unido',42355.12,902,2900000)

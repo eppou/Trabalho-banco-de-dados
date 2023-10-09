@@ -1,0 +1,2 @@
+INSERT INTO crime_db.crimes(tipo,descricao,data_crime,latitude,longitude,nome_cidade,nome_estado,sigla_estado,nome_pais)
+VALUES('danos morais','comportamento antisocial no endereço ou proximo a Further/higher Educational Building','2020-09-01',52.479094,-1.849685,'Birmingham','West-Midlands','WM','Reino Unido')

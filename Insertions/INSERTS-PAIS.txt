@@ -1,0 +1,5 @@
+INSERT INTO pais (nome,area,populacao,idh,rpc_pais)
+VALUES('Estados Unidos da America',9834000,331900000,0.915,67500)
+
+INSERT INTO PAIS (nome,area,populacao,idh,rpc_pais)
+VALUES('Reino Unido',243610,67330000,0.849,46510.28)

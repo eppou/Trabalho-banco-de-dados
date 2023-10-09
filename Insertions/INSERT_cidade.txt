@@ -1,0 +1,2 @@
+INSERT INTO crime_db.cidade(nome,nome_estado,sigla_estado,area_cidade,populacao_cidade,rpc_cidade)
+VALUES ('Birmingham','West-Midlands','WM',267.8,1149000,25903.61)
