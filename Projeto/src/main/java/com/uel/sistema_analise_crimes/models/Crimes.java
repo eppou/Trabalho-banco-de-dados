@@ -12,6 +12,10 @@ public class Crimes {
     private String sigla_estado;
     private String nome_pais;
 
+    public Crimes(){
+
+    }
+
     public Crimes(int id_crime, String tipo, String descricao, Date data_crime, float latitude, float longitude, String nome_cidade, String nome_estado, String sigla_estado, String nome_pais) {
         this.id_crime = id_crime;
         this.tipo = tipo;

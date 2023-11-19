@@ -3,6 +3,7 @@ package com.uel.sistema_analise_crimes.DAO;
 
 
 import com.uel.sistema_analise_crimes.jdbc.ConnectionFactory;
+import com.uel.sistema_analise_crimes.models.CrimesBrutais;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -69,7 +70,11 @@ public abstract class DAOFactory implements AutoCloseable {
 
 
     public abstract CrimesDAO getCrimesDAO();
-
+    public abstract CrimesBrutaisDAO getCrimesBrutaisDAO();
+    public abstract OutrosCrimesDAO getOutrosCrimesDAO();
+    public abstract CidadeDAO getCidadeDAO();
+    public abstract EstadoDAO getEstadoDAO();
+    public abstract PaisDAO getPaisDAO();
 
 
     @Override
