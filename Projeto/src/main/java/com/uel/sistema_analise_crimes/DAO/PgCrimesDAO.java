@@ -4,6 +4,7 @@ import com.uel.sistema_analise_crimes.models.Crimes;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class PgCrimesDAO implements CrimesDAO {
     private static final String GET_ALL_CRIMES = "SELECT * FROM crime_db.crimes";
     private static final String UPDATE_CRIMES = "UPDATE FROM crime_db.crimes SET descricao=?, WHERE id_crime = ?";
     private static final String DELETE_CRIMES = "DELETE FROM crime_db.crimes  WHERE id_crime = ?";
+    private static final String GET_CURRENT_ID = "SELECT currval('crime_db.id_crime_seq')";
 
     @Override
     public void create(Crimes crimes) throws SQLException {
@@ -126,5 +128,20 @@ public class PgCrimesDAO implements CrimesDAO {
             System.err.println(ex.getMessage());
             throw new SQLException("Erro no delete crime");
         }
+    }
+
+    @Override
+    public int getId(Crimes crimes) {
+
+        try (PreparedStatement statement = connection.prepareStatement(GET_CURRENT_ID)){
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return -1;
     }
 }

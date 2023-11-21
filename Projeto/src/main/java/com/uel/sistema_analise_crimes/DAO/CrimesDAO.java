@@ -5,5 +5,5 @@ import com.uel.sistema_analise_crimes.models.Crimes;
 
 
 public interface CrimesDAO extends DAO<Crimes> {
-
+    public int getId(Crimes crime);
 }
