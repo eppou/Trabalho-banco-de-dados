@@ -18,7 +18,7 @@ const CrimeForm = () => {
     axios.post('https://seu-servidor.com/api/endpoint', data)
       .then(response => {
         console.log('Resposta do servidor:', response.data);
-        axios.post('http://localhost:8080/crimes', data)
+        axios.post('http://localhost:8080/crimes', JSON.stringify(data))
       })
       .catch(error => {
         console.error('Erro na requisição:', error);
