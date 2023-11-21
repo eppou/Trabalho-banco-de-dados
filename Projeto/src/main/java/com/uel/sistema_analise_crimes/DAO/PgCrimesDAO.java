@@ -15,13 +15,13 @@ public class PgCrimesDAO implements CrimesDAO {
         this.connection = connection;
     }
 
-    private static final String CREATE_CRIMES = "INSERT INTO crimes_db.crimes(id_crime,tipo,descricao,data_crime,latitude, longitude,nome_cidade,nome_estado, sigla_estado, nome_pais)" +
+    private static final String CREATE_CRIMES = "INSERT INTO crime_db.crimes(id_crime,tipo,descricao,data_crime,latitude, longitude,nome_cidade,nome_estado, sigla_estado, nome_pais)" +
                                                 "VALUES (?,?,?,?,?,?,?,?,?,?)";
 
-    private static final String GET_CRIMES = "SELECT * FROM crimes_db.crimes  WHERE id_crime = ?";
-    private static final String GET_ALL_CRIMES = "SELECT * FROM crimes_db.crimes";
-    private static final String UPDATE_CRIMES = "UPDATE FROM crimes_db.crimes SET descricao=?, WHERE id_crime = ?";
-    private static final String DELETE_CRIMES = "DELETE FROM crimes_db.crimes  WHERE id_crime = ?";
+    private static final String GET_CRIMES = "SELECT * FROM crime_db.crimes  WHERE id_crime = ?";
+    private static final String GET_ALL_CRIMES = "SELECT * FROM crime_db.crimes";
+    private static final String UPDATE_CRIMES = "UPDATE FROM crime_db.crimes SET descricao=?, WHERE id_crime = ?";
+    private static final String DELETE_CRIMES = "DELETE FROM crime_db.crimes  WHERE id_crime = ?";
 
     @Override
     public void create(Crimes crimes) throws SQLException {

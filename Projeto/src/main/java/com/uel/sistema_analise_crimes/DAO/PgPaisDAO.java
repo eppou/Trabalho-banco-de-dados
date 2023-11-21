@@ -16,11 +16,11 @@ public class PgPaisDAO implements PaisDAO{
         this.connection = connection;
     }
 
-    private static final String CREATE_PAIS = "INSERT INTO crimes_db.pais(nome, area, populacao, idh, rpc_pais)" + "VALUES (?,?,?,?,?)";
-    private static final String GET_PAIS = "SELECT * FROM crimes_db.pais  WHERE nome = ?";
-    private static final String GET_ALL_PAISES = "SELECT * FROM crimes_db.pais";
-    private static final String UPDATE_PAIS = "UPDATE * FROM crimes_db.pais SET area=?, populacao=?, idh=?, rpc_pais=? WHERE nome = ?";
-    private static final String DELETE_PAIS = "DELETE * FROM crimes_db.pais  WHERE nome = ?";
+    private static final String CREATE_PAIS = "INSERT INTO crime_db.pais(nome, area, populacao, idh, rpc_pais)" + "VALUES (?,?,?,?,?)";
+    private static final String GET_PAIS = "SELECT * FROM crime_db.pais  WHERE nome = ?";
+    private static final String GET_ALL_PAISES = "SELECT * FROM crime_db.pais";
+    private static final String UPDATE_PAIS = "UPDATE * FROM crime_db.pais SET area=?, populacao=?, idh=?, rpc_pais=? WHERE nome = ?";
+    private static final String DELETE_PAIS = "DELETE * FROM crime_db.pais  WHERE nome = ?";
 
     @Override
     public void create(Pais object) throws SQLException {

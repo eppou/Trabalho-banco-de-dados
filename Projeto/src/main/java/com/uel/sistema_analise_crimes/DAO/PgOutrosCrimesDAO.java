@@ -16,11 +16,11 @@ public class PgOutrosCrimesDAO implements OutrosCrimesDAO{
         this.connection = connection;
     }
 
-    private static final String CREATE_OUTRO_CRIME = "INSERT INTO crimes_db.outros_crimes(id_crime)" + "VALUES (?)";
-    private static final String GET_OUTRO_CRIME = "SELECT * FROM crimes_db.outros_crimes  WHERE id_crime = ?";
-    private static final String GET_ALL_OUTRO_CRIME = "SELECT * FROM crimes_db.outros_crimes";
-    private static final String UPDATE_OUTRO_CRIME = "UPDATE * FROM crimes_db.outros_crimes WHERE id_crime = ?";
-    private static final String DELETE_OUTRO_CRIME = "DELETE * FROM crimes_db.outros_crimes  WHERE id_crime = ?";
+    private static final String CREATE_OUTRO_CRIME = "INSERT INTO crime_db.outros_crimes(id_crime)" + "VALUES (?)";
+    private static final String GET_OUTRO_CRIME = "SELECT * FROM crime_db.outros_crimes  WHERE id_crime = ?";
+    private static final String GET_ALL_OUTRO_CRIME = "SELECT * FROM crime_db.outros_crimes";
+    private static final String UPDATE_OUTRO_CRIME = "UPDATE * FROM crime_db.outros_crimes WHERE id_crime = ?";
+    private static final String DELETE_OUTRO_CRIME = "DELETE * FROM crime_db.outros_crimes  WHERE id_crime = ?";
 
 
     @Override

@@ -15,11 +15,11 @@ public class PgCrimesBrutaisDAO implements CrimesBrutaisDAO{
         this.connection = connection;
     }
 
-    private static final String CREATE_CRIME_BRUTAL = "INSERT INTO crimes_db.crimes_brutais(id_crime, num_vitimas)" + "VALUES (?,?)";
-    private static final String GET_CRIME_BRUTAL = "SELECT * FROM crimes_db.crimes_brutais  WHERE id_crime = ?";
-    private static final String GET_ALL_CRIMES_BRUTAIS = "SELECT * FROM crimes_db.crimes_brutais";
-    private static final String UPDATE_CRIME_BRUTAL = "UPDATE * FROM crimes_db.crimes_brutais SET num_vitimas=?, WHERE id_crime = ?";
-    private static final String DELETE_CRIME_BRUTAL = "DELETE * FROM crimes_db.crimes_brutais  WHERE id_crime = ?";
+    private static final String CREATE_CRIME_BRUTAL = "INSERT INTO crime_db.crimes_brutais(id_crime, num_vitimas)" + "VALUES (?,?)";
+    private static final String GET_CRIME_BRUTAL = "SELECT * FROM crime_db.crimes_brutais  WHERE id_crime = ?";
+    private static final String GET_ALL_CRIMES_BRUTAIS = "SELECT * FROM crime_db.crimes_brutais";
+    private static final String UPDATE_CRIME_BRUTAL = "UPDATE * FROM crime_db.crimes_brutais SET num_vitimas=?, WHERE id_crime = ?";
+    private static final String DELETE_CRIME_BRUTAL = "DELETE * FROM crime_db.crimes_brutais  WHERE id_crime = ?";
 
     @Override
     public void create(CrimesBrutais object) throws SQLException {

@@ -15,11 +15,11 @@ public class PgEstadoDAO implements EstadoDAO{
         this.connection = connection;
     }
 
-    private static final String CREATE_ESTADO = "INSERT INTO crimes_db.estado(nome_estado, sigla_estado, nome_pais, area_estado, populacao_estado, rpc_estado)" + "VALUES (?,?,?,?,?,?)";
-    private static final String GET_ESTADO = "SELECT * FROM crimes_db.estado  WHERE sigla_estado = ? AND nome_pais = ?";
-    private static final String GET_ALL_ESTADOS = "SELECT * FROM crimes_db.estado";
-    private static final String UPDATE_ESTADO = "UPDATE * FROM crimes_db.estado SET nome_estado=?, sigla_estado=?, nome_pais=?, area_estado=?, populacao_estado=?, rpc_estado=? WHERE sigla_estado = ? AND nome_pais = ?";
-    private static final String DELETE_ESTADO = "DELETE * FROM crimes_db.estado  WHERE sigla_estado = ? AND nome_pais = ?";
+    private static final String CREATE_ESTADO = "INSERT INTO crime_db.estado(nome_estado, sigla_estado, nome_pais, area_estado, populacao_estado, rpc_estado)" + "VALUES (?,?,?,?,?,?)";
+    private static final String GET_ESTADO = "SELECT * FROM crime_db.estado  WHERE sigla_estado = ? AND nome_pais = ?";
+    private static final String GET_ALL_ESTADOS = "SELECT * FROM crime_db.estado";
+    private static final String UPDATE_ESTADO = "UPDATE * FROM crime_db.estado SET nome_estado=?, sigla_estado=?, nome_pais=?, area_estado=?, populacao_estado=?, rpc_estado=? WHERE sigla_estado = ? AND nome_pais = ?";
+    private static final String DELETE_ESTADO = "DELETE * FROM crime_db.estado  WHERE sigla_estado = ? AND nome_pais = ?";
 
     @Override
     public void create(Estado object) throws SQLException {

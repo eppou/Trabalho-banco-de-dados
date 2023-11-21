@@ -15,11 +15,11 @@ public class PgCidadeDAO implements CidadeDAO{
         this.connection = connection;
     }
 
-    private static final String CREATE_CIDADE = "INSERT INTO crimes_db.cidade(id_cidade, nome_cidade, estado)" + "VALUES (?,?,?)";
-    private static final String GET_CIDADE = "SELECT * FROM crimes_db.cidade  WHERE id_cidade = ?";
-    private static final String GET_ALL_CIDADES = "SELECT * FROM crimes_db.cidade";
-    private static final String UPDATE_CIDADE = "UPDATE * FROM crimes_db.cidade SET nome_cidade=?, estado=? WHERE id_cidade = ?";
-    private static final String DELETE_CIDADE = "DELETE * FROM crimes_db.cidade  WHERE id_cidade = ?";
+    private static final String CREATE_CIDADE = "INSERT INTO crime_db.cidade(id_cidade, nome_cidade, estado)" + "VALUES (?,?,?)";
+    private static final String GET_CIDADE = "SELECT * FROM crime_db.cidade  WHERE id_cidade = ?";
+    private static final String GET_ALL_CIDADES = "SELECT * FROM crime_db.cidade";
+    private static final String UPDATE_CIDADE = "UPDATE * FROM crime_db.cidade SET nome_cidade=?, estado=? WHERE id_cidade = ?";
+    private static final String DELETE_CIDADE = "DELETE * FROM crime_db.cidade  WHERE id_cidade = ?";
 
     @Override
     public void create(Cidade object) throws SQLException {
