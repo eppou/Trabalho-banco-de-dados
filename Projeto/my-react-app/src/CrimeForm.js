@@ -13,17 +13,36 @@ const CrimeForm = () => {
   const [jsonFile, setJsonFile] = useState(null);
   const [sigla, setSigla] = useState("");
 
-  const sendDataToServer = (data) => {
-    axios.post('http://localhost:8080/crimes', data)
+  const sendDataToServer = () => {
+    // Criar um objeto com a estrutura desejada
+    const crimeData = {
+      tipo: tipoCrime,
+      descricao: descricao,
+      data_string:  dataCrime ? new Date(dataCrime) : null, // Certifique-se de converter a data para o formato desejado
+      latitude: 0, // Preencha com os valores apropriados
+      longitude: 0, // Preencha com os valores apropriados
+      nome_cidade: cidade,
+      nome_estado: estado,
+      sigla_estado: sigla,
+      nome_pais: pais,
+    };
+
+    // Enviar os dados para o servidor
+    axios.post('http://localhost:8080/api/upload-crimes', JSON.stringify(crimeData), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
       .then(response => {
         console.log('Resposta do servidor:', response.data);
-        axios.post('http://localhost:8080/crimes', JSON.stringify(data))
       })
       .catch(error => {
         console.error('Erro na requisição:', error);
+        console.error('Dados que não foram enviados:', JSON.stringify(crimeData));
         // Lógica para lidar com erros
       });
   };
+  
 
   const handleSubmit = () => {
     // Enviar os dados do formulário para um servidor 

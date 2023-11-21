@@ -1,9 +1,15 @@
 package com.uel.sistema_analise_crimes.models;
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Crimes {
     private String tipo;
     private String descricao;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date data_crime;
+    private String data_string;
+
     private float latitude;
     private float longitude;
     private String nome_cidade;
@@ -28,7 +34,13 @@ public class Crimes {
         this.nome_pais = nome_pais;
     }
 
- 
+    public String getData_string() {
+        return data_string;
+    }
+
+    public void setData_string(String data_string) {
+        this.data_string = data_string;
+    }
 
     public String getTipo() {
         return tipo;
