@@ -1,0 +1,42 @@
+/* MinhaTabela.css */
+
+.minha-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px; /* Adicione margem superior conforme necessário */
+    margin-bottom: 100px; /* Adicione margem inferior conforme necessário */
+  
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #fff; /* Adicione uma borda branca entre as células */
+    }
+  
+    th {
+      background-color: #001f3f; /* Azul marinho para os cabeçalhos */
+      color: #ffdc00; /* Amarelo para o texto nos cabeçalhos */
+    }
+  
+    tr:nth-child(even) {
+      background-color: #ffdc00; /* Amarelo para as linhas pares */
+    }
+  
+    tr:nth-child(odd) {
+      background-color: #001f3f; /* Azul marinho para as linhas ímpares */
+    }
+  
+    th, td {
+      padding: 15px; /* Ajuste o espaçamento interno conforme necessário */
+    }
+
+    /* Adiciona traços coloridos entre as colunas */
+    th:not(:last-child),
+    td:not(:last-child) {
+    border-right: 5px solid #ffdc00; /* Amarelo para a borda direita */
+    }
+
+    /* Adiciona traços coloridos entre as linhas */
+    tr:not(:last-child) {
+    border-bottom: 5px solid #ffdc00; /* Amarelo para a borda inferior */
+    }
+  }

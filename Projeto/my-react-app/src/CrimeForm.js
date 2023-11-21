@@ -91,7 +91,7 @@ const CrimeForm = () => {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh',
+    height: '130vh',
     backgroundColor: '#001f3f', // Azul marinho
     color: '#ffdc00', // Amarelo
   };
@@ -101,6 +101,7 @@ const CrimeForm = () => {
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    height: '100%',
     padding: '10px',
     color: '#ffdc00', // Amarelo
   };

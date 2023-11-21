@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,6 +23,40 @@ import java.text.SimpleDateFormat;
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")
 public class CrimesController {
+
+    @GetMapping("/crimes-list")
+    @ResponseBody
+    public List<Crimes> listarCrimes(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) throws Exception {
+        List<Crimes> crimes = new ArrayList<>();
+        DAO<Crimes> crimesdao;
+
+        try (DAOFactory daoFactory = DAOFactory.getInstance()) {
+
+            crimesdao = daoFactory.getCrimesDAO();
+
+            crimes = crimesdao.getAll();
+
+            int startIndex = page * pageSize;
+            int endIndex = Math.min(startIndex + pageSize, crimes.size());
+
+            crimes = crimes.subList(startIndex, endIndex);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            System.out.println("2");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.out.println("3");
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+            System.out.println("4");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("5");
+        }
+
+        return crimes;
+    }
 
     @PostMapping("/upload-crimes")
     @ResponseBody
