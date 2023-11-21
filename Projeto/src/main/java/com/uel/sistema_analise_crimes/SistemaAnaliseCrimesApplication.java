@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SistemaAnaliseCrimesApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(SistemaAnaliseCrimesApplication.class, args);
 	}
 

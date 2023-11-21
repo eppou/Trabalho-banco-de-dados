@@ -1,5 +1,6 @@
 package com.uel.sistema_analise_crimes.DAO;
 
+import com.uel.sistema_analise_crimes.models.Estado;
 import com.uel.sistema_analise_crimes.models.Pais;
 
 import java.sql.Connection;
@@ -88,6 +89,18 @@ public class PgPaisDAO implements PaisDAO{
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
             throw new SQLException("Erro ao atualizar pais");
+        }
+    }
+
+    @Override
+    public void delete(Object key) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_PAIS)) {
+            statement.setString(1, (String)key);
+
+            statement.execute();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            throw new SQLException("Erro ao deletar estado");
         }
     }
 }

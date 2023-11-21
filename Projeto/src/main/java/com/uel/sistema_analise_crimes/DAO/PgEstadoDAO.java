@@ -15,23 +15,22 @@ public class PgEstadoDAO implements EstadoDAO{
         this.connection = connection;
     }
 
-    private static final String CREATE_ESTADO = "INSERT INTO crimes_db.estado(id_estado, nome_estado, sigla_estado, nome_pais, area_estado, populacao_estado, rpc_estado)" + "VALUES (?,?,?,?,?,?,?)";
-    private static final String GET_ESTADO = "SELECT * FROM crimes_db.estado  WHERE id_estado = ?";
+    private static final String CREATE_ESTADO = "INSERT INTO crimes_db.estado(nome_estado, sigla_estado, nome_pais, area_estado, populacao_estado, rpc_estado)" + "VALUES (?,?,?,?,?,?)";
+    private static final String GET_ESTADO = "SELECT * FROM crimes_db.estado  WHERE sigla_estado = ? AND nome_pais = ?";
     private static final String GET_ALL_ESTADOS = "SELECT * FROM crimes_db.estado";
-    private static final String UPDATE_ESTADO = "UPDATE * FROM crimes_db.estado SET nome_estado=?, sigla_estado=?, nome_pais=?, area_estado=?, populacao_estado=?, rpc_estado=? WHERE id_estado = ?";
-    private static final String DELETE_ESTADO = "DELETE * FROM crimes_db.estado  WHERE id_estado = ?";
+    private static final String UPDATE_ESTADO = "UPDATE * FROM crimes_db.estado SET nome_estado=?, sigla_estado=?, nome_pais=?, area_estado=?, populacao_estado=?, rpc_estado=? WHERE sigla_estado = ? AND nome_pais = ?";
+    private static final String DELETE_ESTADO = "DELETE * FROM crimes_db.estado  WHERE sigla_estado = ? AND nome_pais = ?";
 
     @Override
     public void create(Estado object) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(CREATE_ESTADO)) {
 
-            statement.setInt(1, object.getId_estado());
-            statement.setString(2, object.getNome_estado());
-            statement.setString(3, object.getSigla_estado());
-            statement.setString(4, object.getNome_pais());
-            statement.setFloat(5, object.getArea_estado());
-            statement.setInt(6, object.getPopulacao_estado());
-            statement.setFloat(7, object.getRpc_estado());
+            statement.setString(1, object.getSigla());
+            statement.setString(2, object.getNome());
+            statement.setString(3, object.getNome_pais());
+            statement.setFloat(4, object.getArea_estado());
+            statement.setInt(5, object.getPopulacao_estado());
+            statement.setFloat(6, object.getRpc_estado());
             statement.execute();
 
         } catch (SQLException ex) {
@@ -42,13 +41,15 @@ public class PgEstadoDAO implements EstadoDAO{
 
     @Override
     public Estado get(Object key) throws SQLException {
+
         Estado estado = null;
         try (PreparedStatement statement = connection.prepareStatement(GET_ESTADO)) {
-            statement.setInt(1, (int)key);
+            statement.setString(1, ((Estado) key).getSigla());
+            statement.setString(2, ((Estado) key).getNome_pais());
             statement.executeQuery();
 
             while (statement.getResultSet().next()) {
-                estado = new Estado(statement.getResultSet().getInt("sigla"), statement.getResultSet().getString("nome_pais"));
+                estado = new Estado(statement.getResultSet().getString("sigla"),statement.getResultSet().getString("nome"), statement.getResultSet().getString("nome_pais"), statement.getResultSet().getFloat("rpc_estado"),statement.getResultSet().getFloat("area_estado"),statement.getResultSet().getInt("populacao_estado"));
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -66,7 +67,7 @@ public class PgEstadoDAO implements EstadoDAO{
             statement.executeQuery();
 
             while (statement.getResultSet().next()) {
-                estados.add(new Estado(statement.getResultSet().getInt("sigla"), statement.getResultSet().getString("nome_pais")));
+                estados.add(new Estado(statement.getResultSet().getString("sigla"),statement.getResultSet().getString("nome"), statement.getResultSet().getString("nome_pais"), statement.getResultSet().getFloat("rpc_estado"),statement.getResultSet().getFloat("area_estado"),statement.getResultSet().getInt("populacao_estado")));
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -79,13 +80,14 @@ public class PgEstadoDAO implements EstadoDAO{
     @Override
     public void update(Estado object) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_ESTADO)) {
-            statement.setString(1, object.getNome_estado());
-            statement.setString(2, object.getSigla_estado());
+            statement.setString(1, object.getNome());
+            statement.setString(2, object.getSigla());
             statement.setString(3, object.getNome_pais());
             statement.setFloat(4, object.getArea_estado());
             statement.setInt(5, object.getPopulacao_estado());
             statement.setFloat(6, object.getRpc_estado());
-            statement.setInt(7, object.getId_estado());
+            statement.setString(7, object.getSigla());
+            statement.setString(8, object.getNome_pais());
             statement.execute();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -96,7 +98,8 @@ public class PgEstadoDAO implements EstadoDAO{
     @Override
     public void delete(Object key) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(DELETE_ESTADO)) {
-            statement.setInt(1, (int)key);
+            statement.setString(1, ((Estado) key).getSigla());
+            statement.setString(1, ((Estado) key).getNome_pais());
             statement.execute();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
