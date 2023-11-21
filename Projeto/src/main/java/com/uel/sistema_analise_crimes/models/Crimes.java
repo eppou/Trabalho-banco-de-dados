@@ -1,7 +1,6 @@
 package com.uel.sistema_analise_crimes.models;
 import java.util.Date;
 public class Crimes {
-    private int id_crime;
     private String tipo;
     private String descricao;
     private Date data_crime;
@@ -17,7 +16,7 @@ public class Crimes {
     }
 
     public Crimes(int id_crime, String tipo, String descricao, Date data_crime, float latitude, float longitude, String nome_cidade, String nome_estado, String sigla_estado, String nome_pais) {
-        this.id_crime = id_crime;
+
         this.tipo = tipo;
         this.descricao = descricao;
         this.data_crime = data_crime;
@@ -29,13 +28,7 @@ public class Crimes {
         this.nome_pais = nome_pais;
     }
 
-    public int getId_crime() {
-        return id_crime;
-    }
-
-    public void setId_crime(int id_crime) {
-        this.id_crime = id_crime;
-    }
+ 
 
     public String getTipo() {
         return tipo;

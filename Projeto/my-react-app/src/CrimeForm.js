@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import CrimesController from './Trabalho-banco-de-dados/Projeto/src/main/java/com/uel/sistema_analise_crimes/Controller/CrimesController';
 
 
 const CrimeForm = () => {
@@ -15,7 +14,7 @@ const CrimeForm = () => {
   const [sigla, setSigla] = useState("");
 
   const sendDataToServer = (data) => {
-    axios.post('https://seu-servidor.com/api/endpoint', data)
+    axios.post('http://localhost:8080/crimes', data)
       .then(response => {
         console.log('Resposta do servidor:', response.data);
         axios.post('http://localhost:8080/crimes', JSON.stringify(data))
@@ -42,13 +41,26 @@ const CrimeForm = () => {
   };
 
   const handleJsonSubmit = () => {
-    // Enviar o arquivo JSON para um servidor
+    // Enviar o arquivo JSON para o servidor
     if (jsonFile) {
-      const formData = new FormData();
-      formData.append("jsonFile", jsonFile);
-      // Faça a lógica de envio do arquivo para o servidor
+        const formData = new FormData();
+        formData.append("jsonFile", jsonFile);
+
+        fetch("http://localhost:8080/api/upload-json", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Lógica adicional após o envio bem-sucedido
+            })
+            .catch((error) => {
+                console.error("Erro ao enviar arquivo JSON:", error);
+                // Lógica adicional em caso de erro
+            });
     }
-  };
+};
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
