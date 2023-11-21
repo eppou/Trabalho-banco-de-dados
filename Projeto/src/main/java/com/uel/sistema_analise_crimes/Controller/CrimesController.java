@@ -6,6 +6,8 @@ import com.uel.sistema_analise_crimes.DAO.CrimesDAO;
 import com.uel.sistema_analise_crimes.DAO.DAO;
 import com.uel.sistema_analise_crimes.DAO.DAOFactory;
 import com.uel.sistema_analise_crimes.models.Crimes;
+import com.uel.sistema_analise_crimes.models.CrimesBrutais;
+import com.uel.sistema_analise_crimes.models.OutrosCrimes;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +25,7 @@ public class CrimesController {
     @PostMapping("/upload-crimes")
     @ResponseBody
     public void criarNovoCrime(@RequestBody String jsonString) throws Exception {
+
         DAO<Crimes> crimesdao;
         String formatoString = "yyyy-MM";
         SimpleDateFormat formato = new SimpleDateFormat(formatoString);
@@ -72,8 +75,10 @@ public class CrimesController {
     @PostMapping("/upload-json")
     @ResponseBody
     public void processarUpload(@RequestParam("jsonFile") MultipartFile jsonFile) throws Exception {
-
-        DAO<Crimes> crimesdao;
+        int id;
+        CrimesDAO crimesdao;
+        DAO< CrimesBrutais> crimesbrutaisdao;
+        DAO< OutrosCrimes> outroscrimesdao;
         String formatoString = "yyyy-MM";
         SimpleDateFormat formato = new SimpleDateFormat(formatoString);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -81,6 +86,9 @@ public class CrimesController {
         try (DAOFactory daoFactory = DAOFactory.getInstance()) {
 
             crimesdao = daoFactory.getCrimesDAO();
+            crimesbrutaisdao = daoFactory.getCrimesBrutaisDAO();
+            outroscrimesdao = daoFactory.getOutrosCrimesDAO();
+
             try {
                 JsonNode jsonNode = objectMapper.readTree(jsonFile.getInputStream());
 
@@ -110,6 +118,16 @@ public class CrimesController {
 
 
                     crimesdao.create(crime);
+                    if(crimesdao.getId(crime)!=-1) {
+                        if (crimeNode.get("grave").asInt() == 0) {
+                            OutrosCrimes outroscrimes = new OutrosCrimes(crimesdao.getId(crime));
+                            outroscrimesdao.create(outroscrimes);
+
+                        } else {
+                            CrimesBrutais crimesBrutais = new CrimesBrutais(crimesdao.getId(crime), crimeNode.get("n_vitimas").asInt());
+                            crimesbrutaisdao.create(crimesBrutais);
+                        }
+                    }
                 }
 
 
