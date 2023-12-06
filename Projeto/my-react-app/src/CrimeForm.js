@@ -12,6 +12,8 @@ const CrimeForm = () => {
   const [pais, setPais] = useState("");
   const [jsonFile, setJsonFile] = useState(null);
   const [sigla, setSigla] = useState("");
+  const [highlightedCity, setHighlightedCity] = useState(null);
+  const [cidades, setCidades] = useState([]);
 
   const sendDataToServer = () => {
     // Criar um objeto com a estrutura desejada
@@ -33,19 +35,19 @@ const CrimeForm = () => {
         'Content-Type': 'application/json',
       },
     })
-      .then(response => {
-        console.log('Resposta do servidor:', response.data);
-      })
-      .catch(error => {
-        console.error('Erro na requisição:', error);
-        console.error('Dados que não foram enviados:', JSON.stringify(crimeData));
-        // Lógica para lidar com erros
-      });
+        .then(response => {
+          console.log('Resposta do servidor:', response.data);
+        })
+        .catch(error => {
+          console.error('Erro na requisição:', error);
+          console.error('Dados que não foram enviados:', JSON.stringify(crimeData));
+          // Lógica para lidar com erros
+        });
   };
-  
+
 
   const handleSubmit = () => {
-    // Enviar os dados do formulário para um servidor 
+    // Enviar os dados do formulário para um servidor
     const data = {
       descricao,
       tipoCrime,
@@ -55,31 +57,74 @@ const CrimeForm = () => {
       sigla,
       pais,
     };
-  
+
     sendDataToServer(data);
+  };
+
+
+
+
+  React.useEffect(() => {
+    axios
+        .get(`http://localhost:8080/api/get-cidades`)
+        .then(response => {
+          setCidades(response.data);
+        })
+        .catch(error => {
+          console.error('Erro ao buscar cidades:', error);
+        });
+  }, []);
+  const [selectedCity, setSelectedCity] = useState(null);
+
+  const handleCityClick = (city) => {
+    setSelectedCity(city.nome);
+    setHighlightedCity(city.nome); // Destaca a cidade ao ser clicada
+    handleCitySubmit(city.nome);
+  };
+
+  const handleCitySubmit = (cityName) => {
+    // Enviar o nome da cidade para o servidor
+
+    const formData = new FormData();
+    formData.append("cidade", cityName);
+    console.log(cityName)
+
+    fetch(`http://localhost:8080/api/upload-crime-city`, {
+      method: 'POST',
+      body: formData,
+    })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          // Lógica adicional após o envio bem-sucedido
+        })
+        .catch((error) => {
+          console.error('Erro ao enviar cidade:', error);
+          // Lógica adicional em caso de erro
+        });
   };
 
   const handleJsonSubmit = () => {
     // Enviar o arquivo JSON para o servidor
     if (jsonFile) {
-        const formData = new FormData();
-        formData.append("jsonFile", jsonFile);
+      const formData = new FormData();
+      formData.append("jsonFile", jsonFile);
 
-        fetch("http://localhost:8080/api/upload-json", {
-            method: "POST",
-            body: formData,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                // Lógica adicional após o envio bem-sucedido
-            })
-            .catch((error) => {
-                console.error("Erro ao enviar arquivo JSON:", error);
-                // Lógica adicional em caso de erro
-            });
+      fetch("http://localhost:8080/api/upload-json", {
+        method: "POST",
+        body: formData,
+      })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            // Lógica adicional após o envio bem-sucedido
+          })
+          .catch((error) => {
+            console.error("Erro ao enviar arquivo JSON:", error);
+            // Lógica adicional em caso de erro
+          });
     }
-};
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -151,115 +196,166 @@ const CrimeForm = () => {
     color: '#ffdc00', // Amarelo
   };
 
+  const cityButtonStyle = {
+    padding: '8px',
+    marginBottom: '16px',
+    fontSize: '16px',
+    backgroundColor: '#ffdc00', // Amarelo
+    color: '#001f3f', // Azul marinho
+    borderRadius: '5px',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s', // Adiciona uma transição para a propriedade background-color
+  };
+
+  const citiesContainerStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+  };
+
+  const cityButtonContainerStyle = {
+    flex: '0 0 25%', // Cada coluna ocupa 25% da largura
+    boxSizing: 'border-box',
+    padding: '5px',
+    color:' red',
+  };
+
+  const transitionDuration = '0.3s';
+
+  const highlightedButtonStyle = {
+    ...cityButtonStyle,
+    boxShadow: '0 0 5px 2px red', // Adiciona uma sombra vermelha ao botão destacado
+    transition: `box-shadow ${transitionDuration}`,
+  };
+
+
   return (
-    <div style={containerStyle}>
-      <div style={headerStyle}>
-        <Link to="/" style={linkStyle}>
-          <img
-            src="/home_logo.png"
-            alt="Home"
-            style={{ width: '50px', height: '50px', cursor: 'pointer' }}
+      <div style={containerStyle}>
+        <div style={headerStyle}>
+          <Link to="/" style={linkStyle}>
+            <img
+                src="/home_logo.png"
+                alt="Home"
+                style={{ width: '50px', height: '50px', cursor: 'pointer' }}
+            />
+          </Link>
+          <h1>Formulário de Crimes</h1>
+        </div>
+        <div style={formStyle}>
+          <label style={labelStyle}>Descrição</label>
+          <input
+              type="text"
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+              style={inputStyle}
           />
-        </Link>
-        <h1>Formulário de Crimes</h1>
+          <br />
+          <label style={labelStyle}>Tipo de Crime</label>
+          <select
+              value={tipoCrime}
+              onChange={(e) => setTipoCrime(e.target.value)}
+              style={selectStyle}
+          >
+            <option value="crime com assasinato">Crime com assasinato</option>
+            <option value="crime sexual">Crime sexual</option>
+            <option value="assedio sexual">Assédio sexual</option>
+            <option value="furto">Furto</option>
+            <option value="roubo">Roubo</option>
+            <option value="roubo de veiculo">Roubo de veiculo</option>
+            <option value="crimes de transito">Crimes de transito</option>
+            <option value="danos morais">Danos morais</option>
+            <option value="violacao da ordem publica">Violação da ordem publica</option>
+            <option value="roubo a loja ou instituicao">Roubo a loja ou instituicao</option>
+            <option value="posse de arma">Posse de arma</option>
+            <option value="drogas">Drogas</option>
+            <option value="crimes violento">Crimes violento</option>
+            <option value="outros">Outros</option>
+          </select>
+          <br />
+          <label style={labelStyle}>Data do Crime</label>
+          <br />
+          <input
+              type="date"
+              value={dataCrime}
+              onChange={(e) => setDataCrime(e.target.value)}
+              style={inputStyle}
+          />
+          <br />
+          <label style={labelStyle}>Cidade</label>
+          <br />
+          <input
+              type="text"
+              value={cidade}
+              onChange={(e) => setCidade(e.target.value)}
+              style={inputStyle}
+          />
+          <br />
+          <label style={labelStyle}>Estado</label>
+          <br />
+          <input
+              type="text"
+              value={estado}
+              onChange={(e) => setEstado(e.target.value)}
+              style={inputStyle}
+          />
+          <br />
+          <br />
+          <label style={labelStyle}>Sigla Estado</label>
+          <br />
+          <input
+              type="text"
+              value={sigla}
+              onChange={(e) => setSigla(e.target.value)}
+              style={inputStyle}
+          />
+          <br />
+          <label style={labelStyle}>País</label>
+          <br />
+          <input
+              type="text"
+              value={pais}
+              onChange={(e) => setPais(e.target.value)}
+              style={inputStyle}
+          />
+          <br />
+          <br />
+          <button onClick={handleSubmit} style={buttonStyle}>
+            Enviar
+          </button>
+          <br />
+          <br />
+          <label style={labelStyle}>Ou envie Arquivo JSON com os relatos</label>
+          <input
+              type="file"
+              accept=".json"
+              onChange={handleFileChange}
+              style={inputStyle}
+          />
+          <br />
+          <br />
+          <button onClick={handleJsonSubmit} style={buttonStyle}>
+            Enviar JSON
+          </button>
+
+          <label style={labelStyle}>Selecione a cidade ou <Link to= "/AdicionarCidade" >
+            Adicionar Cidade
+          </Link>
+          </label>
+
+          <div style={citiesContainerStyle}>
+            {cidades.map((city) => (
+                <div key={city.nome} style={cityButtonContainerStyle}>
+                  <button
+                      onClick={() => handleCityClick(city)}
+                      style={highlightedCity === city.nome ? highlightedButtonStyle : cityButtonStyle}>
+                    {city.nome}
+                  </button>
+                </div>
+            ))}
+          </div>
+          <br />
+          <br />
+        </div>
       </div>
-      <div style={formStyle}>
-        <label style={labelStyle}>Descrição</label>
-        <input
-          type="text"
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
-          style={inputStyle}
-        />
-        <br />
-        <label style={labelStyle}>Tipo de Crime</label>
-        <select
-          value={tipoCrime}
-          onChange={(e) => setTipoCrime(e.target.value)}
-          style={selectStyle}
-        >
-          <option value="crime com assasinato">Crime com assasinato</option>
-          <option value="crime sexual">Crime sexual</option>
-          <option value="assedio sexual">Assédio sexual</option>
-          <option value="furto">Furto</option>
-          <option value="roubo">Roubo</option>
-          <option value="roubo de veiculo">Roubo de veiculo</option>
-          <option value="crimes de transito">Crimes de transito</option>
-          <option value="danos morais">Danos morais</option>
-          <option value="violacao da ordem publica">Violação da ordem publica</option>
-          <option value="roubo a loja ou instituicao">Roubo a loja ou instituicao</option>
-          <option value="posse de arma">Posse de arma</option>
-          <option value="drogas">Drogas</option>
-          <option value="crimes violento">Crimes violento</option>
-          <option value="outros">Outros</option>
-        </select>
-        <br />
-        <label style={labelStyle}>Data do Crime</label>
-        <br />
-        <input
-          type="date"
-          value={dataCrime}
-          onChange={(e) => setDataCrime(e.target.value)}
-          style={inputStyle}
-        />
-        <br />
-        <label style={labelStyle}>Cidade</label>
-        <br />
-        <input
-          type="text"
-          value={cidade}
-          onChange={(e) => setCidade(e.target.value)}
-          style={inputStyle}
-        />
-        <br />
-        <label style={labelStyle}>Estado</label>
-        <br />
-        <input
-          type="text"
-          value={estado}
-          onChange={(e) => setEstado(e.target.value)}
-          style={inputStyle}
-        />
-        <br />
-        <br />
-        <label style={labelStyle}>Sigla Estado</label>
-        <br />
-        <input
-          type="text"
-          value={sigla}
-          onChange={(e) => setSigla(e.target.value)}
-          style={inputStyle}
-        />
-        <br />
-        <label style={labelStyle}>País</label>
-        <br />
-        <input
-          type="text"
-          value={pais}
-          onChange={(e) => setPais(e.target.value)}
-          style={inputStyle}
-        />
-        <br />
-        <br />
-        <button onClick={handleSubmit} style={buttonStyle}>
-          Enviar
-        </button>
-        <br />
-        <br />
-        <label style={labelStyle}>Ou envie Arquivo JSON com os relatos</label>
-        <input
-          type="file"
-          accept=".json"
-          onChange={handleFileChange}
-          style={inputStyle}
-        />
-        <br />
-        <br />
-        <button onClick={handleJsonSubmit} style={buttonStyle}>
-          Enviar JSON
-        </button>
-      </div>
-    </div>
   );
 };
 
