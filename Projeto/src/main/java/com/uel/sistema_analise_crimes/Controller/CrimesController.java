@@ -135,6 +135,8 @@ public class CrimesController {
             poly = "53.86,-1.66:53.77,-1.40:53.76,-1.55";
         } else if (cidade.equals("Liverpool")) {
             poly = "53.40,-2.90:53.49,-2.82:53.35,-3.005";
+        }else if (cidade.equals("Sheffield")) {
+            poly = "53.35,-1.53:53.43,-1.47:53.347644,-1.388335";
         }
 
         for (int i = 0; i < 4; i++) {
