@@ -15,8 +15,8 @@ public class PgCidadeDAO implements CidadeDAO{
         this.connection = connection;
     }
 
-    private static final String CREATE_CIDADE = "INSERT INTO crime_db.cidade(id_cidade, nome_cidade, estado)" + "VALUES (?,?,?)";
-    private static final String GET_CIDADE = "SELECT * FROM crime_db.cidade  WHERE id_cidade = ?";
+    private static final String CREATE_CIDADE = "INSERT INTO crime_db.cidade(nome, nome_estado, sigla_estado, nome_pais, area_cidade, populacao_cidade, rpc_cidade)" + "VALUES (?,?,?,?,?,?,?)";
+    private static final String GET_CIDADE = "SELECT * FROM crime_db.cidade  WHERE nome = ?";
     private static final String GET_ALL_CIDADES = "SELECT * FROM crime_db.cidade";
     private static final String UPDATE_CIDADE = "UPDATE * FROM crime_db.cidade SET nome_cidade=?, estado=? WHERE id_cidade = ?";
     private static final String DELETE_CIDADE = "DELETE * FROM crime_db.cidade  WHERE id_cidade = ?";
@@ -44,7 +44,7 @@ public class PgCidadeDAO implements CidadeDAO{
     public Cidade get(Object key) throws SQLException {
         Cidade cidade = null;
         try (PreparedStatement statement = connection.prepareStatement(GET_CIDADE)) {
-            statement.setInt(1, (int)key);
+            statement.setString(1, key.toString());
             statement.executeQuery();
 
             while (statement.getResultSet().next()) {

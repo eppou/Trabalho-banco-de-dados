@@ -19,6 +19,10 @@ public class Cidade {
         this.rpc_cidade = rpc_cidade;
     }
 
+    public Cidade() {
+
+    }
+
     public String getNome() {
         return nome;
     }
