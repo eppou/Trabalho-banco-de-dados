@@ -12,8 +12,6 @@ const CrimeForm = () => {
   const [pais, setPais] = useState("");
   const [jsonFile, setJsonFile] = useState(null);
   const [sigla, setSigla] = useState("");
-  const [highlightedCity, setHighlightedCity] = useState(null);
-  const [cidades, setCidades] = useState([]);
 
   const sendDataToServer = () => {
     // Criar um objeto com a estrutura desejada
@@ -61,48 +59,6 @@ const CrimeForm = () => {
     sendDataToServer(data);
   };
 
-
-
-
-  React.useEffect(() => {
-    axios
-        .get(`http://localhost:8080/api/get-cidades`)
-        .then(response => {
-          setCidades(response.data);
-        })
-        .catch(error => {
-          console.error('Erro ao buscar cidades:', error);
-        });
-  }, []);
-  const [selectedCity, setSelectedCity] = useState(null);
-
-  const handleCityClick = (city) => {
-    setSelectedCity(city.nome);
-    setHighlightedCity(city.nome); // Destaca a cidade ao ser clicada
-    handleCitySubmit(city.nome);
-  };
-
-  const handleCitySubmit = (cityName) => {
-    // Enviar o nome da cidade para o servidor
-
-    const formData = new FormData();
-    formData.append("cidade", cityName);
-    console.log(cityName)
-
-    fetch(`http://localhost:8080/api/upload-crime-city`, {
-      method: 'POST',
-      body: formData,
-    })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          // Lógica adicional após o envio bem-sucedido
-        })
-        .catch((error) => {
-          console.error('Erro ao enviar cidade:', error);
-          // Lógica adicional em caso de erro
-        });
-  };
 
   const handleJsonSubmit = () => {
     // Enviar o arquivo JSON para o servidor
@@ -196,36 +152,7 @@ const CrimeForm = () => {
     color: '#ffdc00', // Amarelo
   };
 
-  const cityButtonStyle = {
-    padding: '8px',
-    marginBottom: '16px',
-    fontSize: '16px',
-    backgroundColor: '#ffdc00', // Amarelo
-    color: '#001f3f', // Azul marinho
-    borderRadius: '5px',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s', // Adiciona uma transição para a propriedade background-color
-  };
 
-  const citiesContainerStyle = {
-    display: 'flex',
-    flexWrap: 'wrap',
-  };
-
-  const cityButtonContainerStyle = {
-    flex: '0 0 25%', // Cada coluna ocupa 25% da largura
-    boxSizing: 'border-box',
-    padding: '5px',
-    color:' red',
-  };
-
-  const transitionDuration = '0.3s';
-
-  const highlightedButtonStyle = {
-    ...cityButtonStyle,
-    boxShadow: '0 0 5px 2px red', // Adiciona uma sombra vermelha ao botão destacado
-    transition: `box-shadow ${transitionDuration}`,
-  };
 
 
   return (
@@ -336,24 +263,6 @@ const CrimeForm = () => {
             Enviar JSON
           </button>
 
-          <label style={labelStyle}>Selecione a cidade ou <Link to= "/AdicionarCidade" >
-            Adicionar Cidade
-          </Link>
-          </label>
-
-          <div style={citiesContainerStyle}>
-            {cidades.map((city) => (
-                <div key={city.nome} style={cityButtonContainerStyle}>
-                  <button
-                      onClick={() => handleCityClick(city)}
-                      style={highlightedCity === city.nome ? highlightedButtonStyle : cityButtonStyle}>
-                    {city.nome}
-                  </button>
-                </div>
-            ))}
-          </div>
-          <br />
-          <br />
         </div>
       </div>
   );

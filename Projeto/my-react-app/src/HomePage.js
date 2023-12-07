@@ -34,8 +34,13 @@ function App() {
       <Link to="/CrimeForm">
         <button style={buttonStyle}>Relatar Crime</button>
       </Link>
+      <br />
       <Link to="/CrimeList">
         <button style={buttonStyle}>Ver Crimes</button>
+      </Link>
+      <br />
+      <Link to="/City-options">
+        <button style={buttonStyle}>Configuraçoes de Cidade</button>
       </Link>
     </div>
   );
