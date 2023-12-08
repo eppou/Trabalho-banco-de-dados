@@ -12,6 +12,8 @@ import com.uel.sistema_analise_crimes.models.OutrosCrimes;
 import com.uel.sistema_analise_crimes.Controller.CidadeController;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/api")
@@ -184,12 +187,12 @@ public class CrimesController {
                             crimesdao.create(crime);
                             if (crimesdao.getId(crime) != -1) {
                                 if (crime.getTipo().equals("crime violento")) {
-                                    OutrosCrimes outroscrimes = new OutrosCrimes(crimesdao.getId(crime));
-                                    outroscrimesdao.create(outroscrimes);
-
-                                } else {
                                     CrimesBrutais crimesBrutais = new CrimesBrutais(crimesdao.getId(crime), -1);
                                     crimesbrutaisdao.create(crimesBrutais);
+
+                                } else {
+                                    OutrosCrimes outroscrimes = new OutrosCrimes(crimesdao.getId(crime));
+                                    outroscrimesdao.create(outroscrimes);
                                 }
                             }
                         }
@@ -338,7 +341,24 @@ public class CrimesController {
             System.out.println("5");
         }
     }
-    public String getAPIResponse(String url) {
+
+    @GetMapping("/ocorrencias_por_cidade")
+    @ResponseBody
+    public List<Map<String, Object>> getOcorrenciasPorCidade() throws Exception {
+
+        CrimesDAO crimesdao;
+
+        try (DAOFactory daoFactory = DAOFactory.getInstance()) {
+            crimesdao = daoFactory.getCrimesDAO();
+            List<Map<String, Object>> ocorrencias = crimesdao.get_todas_ocorrencias_crimes();
+            return ocorrencias;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+        public String getAPIResponse(String url) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(url))
@@ -355,4 +375,7 @@ public class CrimesController {
             return null;
         }
     }
+
+
+
 }
