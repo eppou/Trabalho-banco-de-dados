@@ -143,6 +143,7 @@ const CityOptions = () => {
                 <h1>Configurações de Cidade</h1>
             </div>
             <img src="/cidades-inteligentes.jpg" alt="Crime Watch" style={imageStyle} />
+            <h2>Selecione uma cidade para inserir os crimes da mesma:</h2>
             <div style={citiesContainerStyle}>
             {cidades.map((city) => (
                 <div key={city.nome} style={cityButtonContainerStyle}>

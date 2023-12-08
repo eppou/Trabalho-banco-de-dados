@@ -42,6 +42,10 @@ function App() {
       <Link to="/City-options">
         <button style={buttonStyle}>Configuraçoes de Cidade</button>
       </Link>
+      <br />
+      <Link to="/Relatorios">
+        <button style={buttonStyle}>Relatorios</button>
+      </Link>
     </div>
   );
 }
