@@ -358,6 +358,61 @@ public class CrimesController {
         }
     }
 
+    @GetMapping("/relatorio_crime_por_populacao")
+    @ResponseBody
+    public List<Map<String, Object>> getRelatorioCrimePopulcao() throws Exception {
+
+        CrimesDAO crimesdao;
+
+        try (DAOFactory daoFactory = DAOFactory.getInstance()) {
+            crimesdao = daoFactory.getCrimesDAO();
+            List<Map<String, Object>> ocorrencias = crimesdao.get_crimes_por_populacao();
+            return ocorrencias;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/relatorio_crime_rpc_cidade")
+    @ResponseBody
+    public List<Map<String, Object>> getRelatorioCrimeRendaPerCapita() throws Exception {
+
+        CrimesDAO crimesdao;
+
+        try (DAOFactory daoFactory = DAOFactory.getInstance()) {
+            crimesdao = daoFactory.getCrimesDAO();
+            List<Map<String, Object>> ocorrencias = crimesdao.get_crimes_rpc_cidade();
+            return ocorrencias;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @GetMapping("/relatorio_por_cidade")
+    @ResponseBody
+    public List<Map<String, Object>> getRelatorioPorCidade(@RequestParam("nome_cidade") String cidade) throws SQLException, IOException, ClassNotFoundException {
+
+        CrimesDAO crimesdao;
+        System.out.println(cidade);
+
+        try (DAOFactory daoFactory = DAOFactory.getInstance()) {
+            crimesdao = daoFactory.getCrimesDAO();
+            List<Map<String, Object>> ocorrencias = crimesdao.get_Ocorrencias_por_cidade(cidade);
+
+            return ocorrencias;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+
         public String getAPIResponse(String url) {
         try {
             HttpRequest request = HttpRequest.newBuilder()

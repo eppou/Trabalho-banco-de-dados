@@ -28,12 +28,18 @@ public class PgCrimesDAO implements CrimesDAO {
     private static final String DELETE_CRIMES = "DELETE FROM crime_db.crimes  WHERE id_crime = ?";
     private static final String GET_CURRENT_ID = "SELECT currval('crime_db.id_crime_seq')";
 
-    private static final String GET_ALL_CRIMES_BY_CITIES = "SELECT nome_cidade, COUNT(*) AS total_crimes" +
-            "FROM crime_db.crimes" +
-            "GROUP BY nome_cidade;";
-    private static final String GET_MAIORES_OCORRENCIAS_CRIMES = "SELECT tipo, COUNT(*) as numero_de_ocorrencias\n" +
-            "    FROM crime_db.crimes\n" +
-            "    GROUP BY tipo;";
+    private static final String GET_ALL_CRIMES_BY_CITIES = "SELECT nome_cidade, COUNT(*) AS total_crimes FROM crime_db.crimes GROUP BY nome_cidade;";
+
+    private static final String GET_CRIMES_POR_TIPO_E_CIDADES = "SELECT nome_cidade, tipo,  COUNT(*) as total_crimes FROM crime_db.crimes where nome_cidade = ? GROUP BY nome_cidade, tipo;";
+
+    private static final String GET_CRIMES_POR_POPULACAO = "SELECT c.nome_cidade, " +
+            "COUNT(*) AS total_crimes, cidade.populacao_cidade, " +
+            "(COUNT(*) / CAST(cidade.populacao_cidade AS FLOAT)) AS taxa_crimes_por_pessoa " +
+            "FROM crime_db.crimes c " +
+            "JOIN crime_db.cidade ON c.nome_cidade = cidade.nome G" +
+            "ROUP BY c.nome_cidade, cidade.populacao_cidade;";
+
+    private static final String GET_CRIMES_RPC_CIDADE = "SELECT c.nome_cidade, COUNT(*) AS total_crimes, cidade.rpc_cidade FROM crime_db.crimes c JOIN crime_db.cidade ON c.nome_cidade = cidade.nome GROUP BY c.nome_cidade, cidade.rpc_cidade;";
 
 
     @Override
@@ -164,7 +170,7 @@ public class PgCrimesDAO implements CrimesDAO {
             while (resultSet.next()) {
                 Map<String, Object> ocorrencia = new HashMap<>();
                 ocorrencia.put("nome_cidade", resultSet.getString("nome_cidade"));
-                ocorrencia.put("numero_de_ocorrencias", resultSet.getInt("numero_de_ocorrencias"));
+                ocorrencia.put("total_crimes", resultSet.getInt("total_crimes"));
                 ocorrencias.add(ocorrencia);
             }
         } catch (SQLException ex) {
@@ -174,4 +180,64 @@ public class PgCrimesDAO implements CrimesDAO {
         return ocorrencias;
         }
 
+    @Override
+    public List<Map<String, Object>> get_Ocorrencias_por_cidade(String cidade) {
+        List<Map<String, Object>> ocorrenciasList = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement(GET_CRIMES_POR_TIPO_E_CIDADES)) {
+            statement.setString(1, cidade);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Map<String, Object> ocorrencia = new HashMap<>();
+                ocorrencia.put("nome_cidade", resultSet.getString("nome_cidade"));
+                ocorrencia.put("tipo", resultSet.getString("tipo"));
+                ocorrencia.put("total_crimes", resultSet.getInt("total_crimes"));
+                ocorrenciasList.add(ocorrencia);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+
+        return ocorrenciasList;
+    }
+
+    @Override
+    public List<Map<String, Object>> get_crimes_por_populacao() throws SQLException {
+        List<Map<String, Object>> ocorrencias = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(GET_CRIMES_POR_POPULACAO)){
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Map<String, Object> ocorrencia = new HashMap<>();
+                ocorrencia.put("nome_cidade", resultSet.getString("nome_cidade"));
+                ocorrencia.put("total_crimes", resultSet.getInt("total_crimes"));
+                ocorrencia.put("populacao_cidade", resultSet.getInt("populacao_cidade"));
+                ocorrencia.put("taxa_crimes_por_pessoa", resultSet.getFloat("taxa_crimes_por_pessoa"));
+                ocorrencias.add(ocorrencia);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+
+        return ocorrencias;
+    }
+
+    @Override
+    public List<Map<String, Object>> get_crimes_rpc_cidade() throws SQLException {
+        List<Map<String, Object>> ocorrencias = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(GET_CRIMES_RPC_CIDADE)){
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Map<String, Object> ocorrencia = new HashMap<>();
+                ocorrencia.put("nome_cidade", resultSet.getString("nome_cidade"));
+                ocorrencia.put("total_crimes", resultSet.getInt("total_crimes"));
+                ocorrencia.put("rpc_cidade", resultSet.getFloat("rpc_cidade"));
+                ocorrencias.add(ocorrencia);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+
+        return ocorrencias;
+    }
 }
